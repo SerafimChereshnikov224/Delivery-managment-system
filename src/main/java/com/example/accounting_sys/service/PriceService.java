@@ -1,5 +1,6 @@
 package com.example.accounting_sys.service;
 
+import com.example.accounting_sys.dto.PriceListResponse;
 import com.example.accounting_sys.exception.customException.PricePeriodNotFoundException;
 import com.example.accounting_sys.model.entity.Product;
 import com.example.accounting_sys.model.entity.ProductPricePeriod;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,12 +22,21 @@ public class PriceService {
 
     private final ProductService productService;
 
+
     public BigDecimal getPrice(Product product,LocalDate startDate, LocalDate endDate) {
         return productPricePeriodRepository.findByProductAndStartDateLessThanEqualAndEndDateGreaterThanEqual(product,startDate,endDate)
                 .stream()
                 .findFirst()
                 .map(ProductPricePeriod::getPrice)
                 .orElseThrow(() -> new PricePeriodNotFoundException("cant find a price for that product"));
+    }
+
+    public List<PriceListResponse> formatePriceList(Long id) {
+        List<ProductPricePeriod> prices = getProductPrices(id);
+        return prices.stream()
+                .map(pricePeriod -> {
+                    return new PriceListResponse(pricePeriod.getStartDate(),pricePeriod.getEndDate(),pricePeriod.getPrice());
+                }).collect(Collectors.toList());
     }
 
     @Transactional

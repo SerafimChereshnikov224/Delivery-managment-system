@@ -1,6 +1,7 @@
 package com.example.accounting_sys.controller;
 
 import com.example.accounting_sys.dto.NewPriceRequest;
+import com.example.accounting_sys.dto.PriceListResponse;
 import com.example.accounting_sys.model.entity.ProductPricePeriod;
 import com.example.accounting_sys.service.PriceService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,8 @@ public class PriceController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<List<ProductPricePeriod>> getProductPrices(@PathVariable("productId") Long id) {
-        List<ProductPricePeriod> prices = priceService.getProductPrices(id);
+    public ResponseEntity<List<PriceListResponse>> getProductPrices(@PathVariable("productId") Long id) {
+        List<PriceListResponse> prices = priceService.formatePriceList(id);
         return prices.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : ResponseEntity.ok(prices);
     }

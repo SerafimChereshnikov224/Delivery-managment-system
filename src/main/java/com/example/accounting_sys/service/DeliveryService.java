@@ -92,7 +92,7 @@ public class DeliveryService {
                     LocalDate deliveryDate = unit.getDelivery().getDate();
                     Product product = unit.getProduct();
                     BigDecimal price = priceService.getPrice(product,deliveryDate,deliveryDate);
-                    totalPriceForProduct = totalWeightForProduct.add(price.multiply(unit.getWeight()));
+                    totalPriceForProduct = totalPriceForProduct.add(price.multiply(unit.getWeight()));
                 }
 
                 ProductReportDto productReport = new ProductReportDto(productName,totalWeightForProduct,totalPriceForProduct);
