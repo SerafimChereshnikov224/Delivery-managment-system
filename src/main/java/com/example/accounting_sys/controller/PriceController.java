@@ -1,5 +1,6 @@
 package com.example.accounting_sys.controller;
 
+import com.example.accounting_sys.dto.NewPriceRequest;
 import com.example.accounting_sys.model.entity.ProductPricePeriod;
 import com.example.accounting_sys.service.PriceService;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +20,16 @@ public class PriceController {
 
     @PostMapping("/{productId}/quarter-price")
     public ResponseEntity<String> setNextQuarterPrice(@PathVariable("productId") Long id,
-                                                      @RequestBody BigDecimal newPrice
+                                                      @RequestBody NewPriceRequest request
     ) {
-        ProductPricePeriod newPeriod = priceService.setPrice(id,newPrice);
+        ProductPricePeriod newPeriod = priceService.setPrice(id,request.getNewPrice());
         return ResponseEntity.status(HttpStatus.CREATED).body("quarter price added for product: " + newPeriod.getProduct().getName());
     }
 
     @GetMapping("/{productId}")
     public ResponseEntity<List<ProductPricePeriod>> getProductPrices(@PathVariable("productId") Long id) {
-        return ResponseEntity.ok(priceService.getProductPrices(id));
+        List<ProductPricePeriod> prices = priceService.getProductPrices(id);
+        return prices.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : ResponseEntity.ok(prices);
     }
-
 }

@@ -24,7 +24,7 @@ public class DeliveryController {
         return ResponseEntity.status(HttpStatus.CREATED).body("new delivery added, id: " + delivery.getId());
     }
 
-    @GetMapping("report")
+    @GetMapping("/report")
     public ResponseEntity<ReportResponse> getDeliveryReport(@RequestParam("startDate") LocalDate startDate,
                                                             @RequestParam("endDate") LocalDate endDate
     ) {
