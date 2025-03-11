@@ -23,7 +23,7 @@ public class PriceController {
     public ResponseEntity<String> setNextQuarterPrice(@PathVariable("productId") Long id,
                                                       @RequestBody NewPriceRequest request
     ) {
-        ProductPricePeriod newPeriod = priceService.setPrice(id,request.getNewPrice());
+        ProductPricePeriod newPeriod = priceService.setPrice(id, request.getSupplierId(), request.getNewPrice());
         return ResponseEntity.status(HttpStatus.CREATED).body("quarter price added for product: " + newPeriod.getProduct().getName());
     }
 

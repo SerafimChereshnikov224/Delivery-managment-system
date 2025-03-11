@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 public class PriceListResponse {
+    private String supplierName;
     private LocalDate startDate;
     private LocalDate endDate;
     private BigDecimal price;

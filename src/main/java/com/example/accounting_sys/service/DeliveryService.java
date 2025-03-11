@@ -45,7 +45,7 @@ public class DeliveryService {
         List<DeliveryUnit> deliveryUnits = request.getUnits().stream()
                 .map(unit -> {
                     Product product = productService.getById(unit.getProductId());
-                    BigDecimal price = priceService.getPrice(product,request.getDate(),request.getDate());
+                    BigDecimal price = priceService.getPrice(product,supplier,request.getDate(),request.getDate());
                     return DeliveryUnit.builder()
                             .delivery(delivery)
                             .product(product)
@@ -72,6 +72,7 @@ public class DeliveryService {
         for(var supplierUnits : unitsBySupplier.entrySet()) {
             String supplierName = supplierUnits.getKey();
             List<DeliveryUnit> deliveryUnits = supplierUnits.getValue();
+            Supplier supplier = deliveryUnits.getFirst().getDelivery().getSupplier();
 
             Map<String,List<DeliveryUnit>> productsByName = deliveryUnits.stream()
                     .collect(Collectors.groupingBy(unit -> unit.getProduct().getName()));
@@ -91,7 +92,7 @@ public class DeliveryService {
                 for(var unit : unitsForProduct) {
                     LocalDate deliveryDate = unit.getDelivery().getDate();
                     Product product = unit.getProduct();
-                    BigDecimal price = priceService.getPrice(product,deliveryDate,deliveryDate);
+                    BigDecimal price = priceService.getPrice(product,supplier,deliveryDate,deliveryDate);
                     totalPriceForProduct = totalPriceForProduct.add(price.multiply(unit.getWeight()));
                 }
 
@@ -99,7 +100,7 @@ public class DeliveryService {
                 productReports.add(productReport);
 
                 totalPriceForSupplier = totalPriceForSupplier.add(totalPriceForProduct);
-                deliveryTotalPrice = deliveryTotalPrice.add(totalPriceForProduct);
+                //deliveryTotalPrice = deliveryTotalPrice.add(totalPriceForProduct);
             }
             SupplierReportDto deliveryReport = new SupplierReportDto(supplierName,productReports,totalPriceForSupplier);
             supplierReports.add(deliveryReport);

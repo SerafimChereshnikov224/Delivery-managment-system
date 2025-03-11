@@ -4,6 +4,7 @@ import com.example.accounting_sys.dto.PriceListResponse;
 import com.example.accounting_sys.exception.customException.PricePeriodNotFoundException;
 import com.example.accounting_sys.model.entity.Product;
 import com.example.accounting_sys.model.entity.ProductPricePeriod;
+import com.example.accounting_sys.model.entity.Supplier;
 import com.example.accounting_sys.repository.ProductPricePeriodRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +22,11 @@ public class PriceService {
     private final ProductPricePeriodRepository productPricePeriodRepository;
 
     private final ProductService productService;
+    private final SupplierService supplierService;
 
 
-    public BigDecimal getPrice(Product product,LocalDate startDate, LocalDate endDate) {
-        return productPricePeriodRepository.findByProductAndStartDateLessThanEqualAndEndDateGreaterThanEqual(product,startDate,endDate)
+    public BigDecimal getPrice(Product product,Supplier supplier, LocalDate startDate, LocalDate endDate) {
+        return productPricePeriodRepository.findByProductAndSupplierAndStartDateLessThanEqualAndEndDateGreaterThanEqual(product,supplier,startDate,endDate)
                 .stream()
                 .findFirst()
                 .map(ProductPricePeriod::getPrice)
@@ -35,7 +37,7 @@ public class PriceService {
         List<ProductPricePeriod> prices = getProductPrices(id);
         return prices.stream()
                 .map(pricePeriod -> {
-                    return new PriceListResponse(pricePeriod.getStartDate(),pricePeriod.getEndDate(),pricePeriod.getPrice());
+                    return new PriceListResponse(pricePeriod.getSupplier().getName(), pricePeriod.getStartDate(),pricePeriod.getEndDate(),pricePeriod.getPrice());
                 }).collect(Collectors.toList());
     }
 
@@ -46,8 +48,9 @@ public class PriceService {
     }
 
     @Transactional
-    public ProductPricePeriod setPrice(Long id, BigDecimal newPrice) {
+    public ProductPricePeriod setPrice(Long id, Long supplierId, BigDecimal newPrice) {
         Product product = productService.getById(id);
+        Supplier supplier = supplierService.getById(supplierId);
 
         List<ProductPricePeriod> pricePeriods = getProductPrices(product.getId());
 
@@ -66,6 +69,7 @@ public class PriceService {
                 .endDate(endDate)
                 .startDate(startDate)
                 .product(product)
+                .supplier(supplier)
                 .build();
         return productPricePeriodRepository.save(period);
 

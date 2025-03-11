@@ -9,4 +9,5 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class NewPriceRequest {
     private BigDecimal newPrice;
+    private Long supplierId;
 }
