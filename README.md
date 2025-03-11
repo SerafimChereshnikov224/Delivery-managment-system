@@ -137,7 +137,7 @@
 	```
      	
 
-4. `POST http://localhost:8080/prices/{supplierId}/quarter-price`
+3. `POST http://localhost:8080/prices/{supplierId}/quarter-price`
    
    Добавить цену на продукт от поставщика на 3 следующих месяца. Параметры: поставщик, новая цена.
    
@@ -151,7 +151,7 @@
    Ответ:
    `201 Created; quarter price added for product: Red Apple`
 
-5. `GET http://localhost:8080/prices/{productId}`
+4. `GET http://localhost:8080/prices/{productId}`
    
    Получить цену на продукт от всех поставщиков на все сроки. Параметры: продукт.
    
