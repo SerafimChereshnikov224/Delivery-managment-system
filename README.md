@@ -54,10 +54,10 @@
       `http://localhost:8080/delivery/report?startDate=2024-01-01&endDate=2024-06-30`
      
      	Ответ:
-     ```
-     200 OK;
-     {
-	"deliveryReportResponses": [
+     	```
+      	200 OK;
+        {
+	   "deliveryReportResponses": [
 		{
 			"supplierName": "Supplier B",
 			"products": [
@@ -131,12 +131,13 @@
 			],
 			"supplierTotalPrice": 4777.3000
 		}
-	],
-	"deliveryTotalPrice": 6835.7250
-    }
-    ```
+	   ],
+	   "deliveryTotalPrice": 6835.7250
+	}                           
+	```
+     	
 
-3. `POST http://localhost:8080/prices/{supplierId}/quarter-price`
+4. `POST http://localhost:8080/prices/{supplierId}/quarter-price`
    
    Добавить цену на продукт от поставщика на 3 следующих месяца. Параметры: поставщик, новая цена.
    
@@ -150,7 +151,7 @@
    Ответ:
    `201 Created; quarter price added for product: Red Apple`
 
-4. `GET http://localhost:8080/prices/{productId}`
+5. `GET http://localhost:8080/prices/{productId}`
    
    Получить цену на продукт от всех поставщиков на все сроки. Параметры: продукт.
    
