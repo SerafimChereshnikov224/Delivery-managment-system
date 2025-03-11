@@ -39,12 +39,14 @@
     Ответ:
     201 Created; new delivery added, id: 18.
 
-  3. // GET "http://localhost:8080/delivery/report" //
-     Получить отчет по поставкам за период времени для видов продуктов по поставщикам с итогами по весу и стоимости. Параметры: начало и конец периода.
+  2.  `GET "http://localhost:8080/delivery/report"`
+     Получить отчет по поставкам за период времени для видов продуктов по поставщикам с итогами по весу и стоимости.
+     Параметры: начало и конец периода.
      Периоды с ценой на 3 месяца на продукт от поставщика хранятся в отдельной таблице в БД. Цена на каждый поставленный продукт высчитывается автоматически по дате и поставщику.
      Пример запроса:
-     http://localhost:8080/delivery/report?startDate=2024-01-01&endDate=2024-06-30
+     `http://localhost:8080/delivery/report?startDate=2024-01-01&endDate=2024-06-30`
      Ответ:
+```
      200 OK;
      {
 	"deliveryReportResponses": [
@@ -124,22 +126,26 @@
 	],
 	"deliveryTotalPrice": 6835.7250
 }
+```
 
-4. // POST http://localhost:8080/prices/{supplierId}/quarter-price //
+5. `POST http://localhost:8080/prices/{supplierId}/quarter-price`
    Добавить цену на продукт от поставщика на 3 следующих месяца. Параметры: поставщик, новая цена.
    Пример запроса:
+   ```
    {
 	    "supplierId" : 3,
 	    "newPrice" : 3.50
    }
+   ```
    Ответ:
-   201 Created; quarter price added for product: Red Apple
+   `201 Created; quarter price added for product: Red Apple`
 
-5. // GET http://localhost:8080/prices/{productId} //
+7. `GET http://localhost:8080/prices/{productId}`
    Получить цену на продукт от всех поставщиков на все сроки. Параметры: продукт.
    Пример запроса:
-   http://localhost:8080/prices/3
+   `http://localhost:8080/prices/3`
    Ответ:
+   ```
    [
 	{
 		"supplierName": "Supplier A",
@@ -177,4 +183,5 @@
 		"endDate": "2024-06-30",
 		"price": 1.17
 	}
-]
+   ]
+```
